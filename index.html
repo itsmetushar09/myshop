@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shree Ganesh Electronics - Expert Electronics Repair Services in Hisar</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.0.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/build/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.132.2/examples/js/controls/OrbitControls.js"></script>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f0f8ff;
+            overflow-x: hidden;
+        }
+        .section {
+            padding: 2rem;
+            margin-bottom: 2rem;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+        .service-card {
+            border: 1px solid #eef5ff;
+            border-radius: 8px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            background-color: white;
+        }
+        .service-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0, 150, 255, 0.15);
+        }
+        .logo-container {
+            background: linear-gradient(120deg, #4a90e2 0%, #1e70eb 100%);
+            padding: 2rem;
+            border-radius: 0 0 50% 50% / 20%;
+        }
+        .contact-info {
+            border-left: 4px solid #4a90e2;
+            padding-left: 1rem;
+        }
+        .gallery-img {
+            transition: transform 0.3s ease;
+        }
+        .gallery-img:hover {
+            transform: scale(1.05);
+        }
+        .section-title {
+            color: #1e70eb;
+            position: relative;
+        }
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 60px;
+            height: 4px;
+            background: linear-gradient(90deg, #4a90e2 0%, #1e70eb 100%);
+        }
+        .canvas-container {
+            width: 100%;
+            height: 300px;
+            overflow: hidden;
+        }
+        #logo3D {
+            width: 100px;
+            height: 100px;
+        }
+        .floating-element {
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        .card-3d {
+            transform-style: preserve-3d;
+            transition: all 0.3s ease;
+        }
+        .card-3d:hover {
+            transform: rotateY(10deg) rotateX(5deg);
+        }
+        .wave-bg {
+            position: relative;
+            overflow: hidden;
+        }
+        .wave-bg::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            left: 0;
+            right: 0;
+            height: 60px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 120' preserveAspectRatio='none'%3E%3Cpath fill='%231e70eb' fill-opacity='.1' d='M0,0V46.29c47.79,22.2,103.59,32.17,158,28,70.36-5.37,136.33-33.31,206.8-37.5C438.64,32.43,512.34,53.67,583,72.05c69.27,18,138.3,24.88,209.4,13.08,36.15-6,69.85-17.84,104.45-29.34C989.49,25,1113-14.29,1200,52.47V0Z' opacity='.25'%3E%3C/path%3E%3Cpath fill='%231e70eb' fill-opacity='.2' d='M0,0V15.81C13,36.92,27.64,56.86,47.69,72.05,99.41,111.27,165,111,224.58,91.58c31.15-10.15,60.09-26.07,89.67-39.8,40.92-19,84.73-46,130.83-49.67,36.26-2.85,70.9,9.42,98.6,31.56,31.77,25.39,62.32,62,103.63,73,40.44,10.79,81.35-6.69,119.13-24.28s75.16-39,116.92-43.05c59.73-5.85,113.28,22.88,168.9,38.84,30.2,8.66,59,6.17,87.09-7.5,22.43-10.89,48-26.93,60.65-49.24V0Z' opacity='.5'%3E%3C/path%3E%3Cpath fill='%231e70eb' fill-opacity='.3' d='M0,0V5.63C149.93,59,314.09,71.32,475.83,42.57c43-7.64,84.23-20.12,127.61-26.46,59-8.63,112.48,12.24,165.56,35.4C827.93,77.22,886,95.24,951.2,90c86.53-7,172.46-45.71,248.8-84.81V0Z' opacity='.75'%3E%3C/path%3E%3C/svg%3E");
+            background-size: cover;
+            z-index: -1;
+        }
+        /* Added styles for Ganesha image */
+        .ganesha-logo {
+            max-width: 120px;
+            margin-bottom: 10px;
+            filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.5));
+            transition: transform 0.3s ease;
+        }
+        .ganesha-logo:hover {
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body class="min-h-screen">
+    <div class="container mx-auto px-4 py-8 max-w-5xl">
+        <!-- Header with Logo - UPDATED with Lord Ganesha image -->
+        <header class="logo-container flex flex-col items-center justify-center text-center mb-8 relative wave-bg">
+            <!-- Added Ganesha image before the 3D logo -->
+            <img src="https://t3.ftcdn.net/jpg/05/27/95/24/360_F_527952402_o3B3EfaITqDH8CIltQxQlh7DT0wYEMkE.webp" alt="Lord Ganesha" class="ganesha-logo">
+            <div id="logo3D" class="mb-4"></div>
+            <h1 class="text-4xl font-bold text-white">Shree Ganesh Electronics</h1>
+            <p class="text-xl text-white mt-2">Expert Electronics Repair Services in Hisar</p>
+        </header>
+
+        <!-- Rest of your HTML content remains the same -->
+        <!-- Hero Section with 3D Animation -->
+        <section class="section overflow-hidden">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 pr-0 md:pr-8 mb-6 md:mb-0">
+                    <div class="rounded-lg shadow-lg overflow-hidden">
+                        <img src="https://page1.genspark.site/v1/base64_upload/4b50a502544b5a65867213821419e2eb" alt="Shop Front" class="w-full">
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="section-title text-3xl font-bold mb-6">Welcome to Shree Ganesh Electronics</h2>
+                    <p class="text-lg mb-4">For 29 years, we've been the trusted name in electronics repair in Hisar, Haryana.</p>
+                    <p class="text-lg mb-4">Located in Patel Nagar, our shop specializes in repairing all types of electronic equipment with expertise, precision, and care.</p>
+                    <div class="bg-blue-50 border-l-4 border-blue-500 p-4 mt-6 floating-element">
+                        <p class="font-semibold">Contact us for professional repair services:</p>
+                        <p class="mt-2"><i class="fas fa-phone mr-2 text-blue-600"></i> 9896335752</p>
+                        <p class="mt-1"><i class="fas fa-envelope mr-2 text-blue-600"></i> shreeganeshelectronics15@gmail.com</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-6">About Us</h2>
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 pr-0 md:pr-8 mb-6 md:mb-0">
+                    <p class="text-lg mb-4">Since 1994, Shree Ganesh Electronics has been serving the community of Hisar with reliable electronic repair and installation services.</p>
+                    <p class="text-lg mb-4">Our team of skilled technicians has decades of experience in diagnosing and repairing a wide range of electronic devices. We take pride in our work and strive for customer satisfaction.</p>
+                    <p class="text-lg">We're also proud to be a Tata Sky brand ambassador, offering official installation and service support.</p>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="bg-blue-50 p-6 rounded-lg shadow card-3d">
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-star text-blue-500 text-xl mr-3"></i>
+                            <h3 class="text-xl font-semibold">29 Years of Excellence</h3>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-tools text-blue-500 text-xl mr-3"></i>
+                            <h3 class="text-xl font-semibold">Expert Technicians</h3>
+                        </div>
+                        <div class="flex items-center mb-4">
+                            <i class="fas fa-certificate text-blue-500 text-xl mr-3"></i>
+                            <h3 class="text-xl font-semibold">Tata Sky Brand Ambassador</h3>
+                        </div>
+                        <div class="flex items-center">
+                            <i class="fas fa-truck text-blue-500 text-xl mr-3"></i>
+                            <h3 class="text-xl font-semibold">Doorstep Services Available</h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- The rest of your HTML code remains unchanged -->
+
+
+        <!-- 3D Animation Canvas -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-6">Our Technology</h2>
+            <div class="canvas-container" id="animationCanvas"></div>
+        </section>
+
+        <!-- Our Services Section with 3D Cards -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-8">Our Repair Services</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="service-card p-6 card-3d">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-tv text-blue-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">TV / LED / LCD Repair</h3>
+                    </div>
+                    <p>Expert repair services for all types of television sets, including modern LED and LCD screens.</p>
+                </div>
+                <div class="service-card p-6 card-3d">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-blender text-blue-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Microwave Repair</h3>
+                    </div>
+                    <p>Professional diagnosis and repair of all microwave oven issues to restore functionality.</p>
+                </div>
+                <div class="service-card p-6 card-3d">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-volume-up text-blue-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Speaker Repair</h3>
+                    </div>
+                    <p>Restoration and repair services for all types of speakers and audio equipment.</p>
+                </div>
+                <div class="service-card p-6 card-3d">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-snowflake text-blue-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Refrigerator Repair</h3>
+                    </div>
+                    <p>Expert cooling system repairs and maintenance for all refrigerator models.</p>
+                </div>
+                <div class="service-card p-6 card-3d">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-tshirt text-blue-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Washing Machine Repair</h3>
+                    </div>
+                    <p>Comprehensive diagnosis and repair of washing machines of all brands and types.</p>
+                </div>
+                <div class="service-card p-6 card-3d">
+                    <div class="flex items-center mb-4">
+                        <i class="fas fa-satellite-dish text-blue-500 text-2xl mr-3"></i>
+                        <h3 class="text-xl font-semibold">Installation Services</h3>
+                    </div>
+                    <p>Professional installation of TVs, Dish TV, cable connections, and Tata Sky services.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Gallery Section -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-8">Our Workshop</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="gallery-img overflow-hidden rounded-lg shadow-md">
+                    <img src="https://page1.genspark.site/v1/base64_upload/c454a04c8c9ed2146f0f3762fc82da8c" alt="Workshop Interior" class="w-full h-64 object-cover">
+                </div>
+                <div class="gallery-img overflow-hidden rounded-lg shadow-md">
+                    <img src="https://page1.genspark.site/v1/base64_upload/fb020a13da003d980d955837369e76e2" alt="Parts and Inventory" class="w-full h-64 object-cover">
+                </div>
+                <div class="gallery-img overflow-hidden rounded-lg shadow-md">
+                    <img src="https://page1.genspark.site/v1/base64_upload/f06772dae20949248e6292581e03ee5c" alt="Repair in Progress" class="w-full h-64 object-cover">
+                </div>
+                <div class="gallery-img overflow-hidden rounded-lg shadow-md">
+                    <img src="https://page1.genspark.site/v1/base64_upload/d4e3f032cb85026ed94f9f6f5ce97dc1" alt="TV Diagnostics" class="w-full h-64 object-cover">
+                </div>
+            </div>
+        </section>
+
+        <!-- Why Choose Us Section -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-8">Why Choose Us</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="bg-white p-6 rounded-lg shadow-md card-3d">
+                    <i class="fas fa-history text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Experience</h3>
+                    <p>29 years of expertise in electronics repair, offering reliable solutions for all your device needs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-3d">
+                    <i class="fas fa-hand-holding-usd text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Affordable Pricing</h3>
+                    <p>Quality repair services at competitive rates, ensuring value for your money.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-3d">
+                    <i class="fas fa-truck text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Doorstep Service</h3>
+                    <p>Convenient repair services at your doorstep, saving you time and effort.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-3d">
+                    <i class="fas fa-tools text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Expert Technicians</h3>
+                    <p>Skilled professionals with in-depth knowledge of electronic device repairs.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-3d">
+                    <i class="fas fa-certificate text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Official Partner</h3>
+                    <p>Authorized Tata Sky brand ambassador, providing genuine installation and services.</p>
+                </div>
+                <div class="bg-white p-6 rounded-lg shadow-md card-3d">
+                    <i class="fas fa-clock text-4xl text-blue-500 mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">Extended Hours</h3>
+                    <p>Open from 10 AM to 10 PM, allowing you to get your electronics fixed at your convenience.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-8">Contact Us</h2>
+            <div class="flex flex-col md:flex-row">
+                <div class="md:w-1/2 pr-0 md:pr-8 mb-6 md:mb-0">
+                    <div class="contact-info mb-6">
+                        <h3 class="text-xl font-bold mb-2">Address</h3>
+                        <p class="text-lg">Shree Ganesh Electronics,</p>
+                        <p class="text-lg">Patel Nagar,</p>
+                        <p class="text-lg">Hisar, Haryana</p>
+                    </div>
+                    <div class="contact-info mb-6">
+                        <h3 class="text-xl font-bold mb-2">Business Hours</h3>
+                        <p class="text-lg">Open daily: 10:00 AM - 10:00 PM</p>
+                    </div>
+                    <div class="contact-info">
+                        <h3 class="text-xl font-bold mb-2">Contact Information</h3>
+                        <p class="text-lg"><i class="fas fa-phone text-blue-500 mr-2"></i> Phone: 9896335752</p>
+                        <p class="text-lg"><i class="fas fa-envelope text-blue-500 mr-2"></i> Email: shreeganeshelectronics15@gmail.com</p>
+                    </div>
+                </div>
+                <div class="md:w-1/2">
+                    <div class="bg-blue-50 p-6 rounded-lg">
+                        <h3 class="text-xl font-bold mb-4">Send Us a Message</h3>
+                        <form>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 mb-2" for="name">Name</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="text" id="name" placeholder="Your Name">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 mb-2" for="email">Email</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="email" id="email" placeholder="Your Email">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 mb-2" for="phone">Phone</label>
+                                <input class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" type="tel" id="phone" placeholder="Your Phone Number">
+                            </div>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 mb-2" for="message">Message</label>
+                                <textarea class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" id="message" rows="4" placeholder="How can we help you?"></textarea>
+                            </div>
+                            <button class="bg-gradient-to-r from-blue-400 to-blue-600 text-white font-bold py-2 px-6 rounded-md hover:opacity-90 transition duration-300" type="submit">
+                                Send Message
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Location Section -->
+        <section class="section">
+            <h2 class="section-title text-3xl font-bold mb-8">Our Location</h2>
+            <div class="overflow-hidden">
+                <img src="https://page1.genspark.site/v1/base64_upload/8f627d38bd69a978bca53b53fe54f667" alt="Shop Location" class="w-full h-64 object-cover rounded-lg shadow-lg">
+            </div>
+        </section>
+
+        <!-- Footer Section -->
+        <footer class="mt-12 py-6 bg-gradient-to-r from-blue-400 to-blue-600 text-white rounded-lg">
+            <div class="container mx-auto text-center">
+                <h2 class="text-2xl font-bold mb-4">Shree Ganesh Electronics</h2>
+                <p class="mb-2">Patel Nagar, Hisar, Haryana</p>
+                <p class="mb-4">Phone: 9896335752 | Email: shreeganeshelectronics15@gmail.com</p>
+                <div class="flex justify-center space-x-4">
+                    <a href="#" class="text-white hover:text-blue-200 transition duration-300">
+                        <i class="fab fa-facebook-f text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-blue-200 transition duration-300">
+                        <i class="fab fa-twitter text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-blue-200 transition duration-300">
+                        <i class="fab fa-instagram text-2xl"></i>
+                    </a>
+                    <a href="#" class="text-white hover:text-blue-200 transition duration-300">
+                        <i class="fab fa-whatsapp text-2xl"></i>
+                    </a>
+                </div>
+                <p class="mt-6 text-sm">© 2023 Shree Ganesh Electronics. All Rights Reserved.</p>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Three.js Scripts -->
+    <script>
+        // 3D Logo Animation
+        (function() {
+            try {
+                const container = document.getElementById('logo3D');
+                const scene = new THREE.Scene();
+                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                
+                const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                renderer.setClearColor(0x000000, 0);
+                container.appendChild(renderer.domElement);
+
+                // Create a group for the logo
+                const logoGroup = new THREE.Group();
+                scene.add(logoGroup);
+
+                // Create geometric logo elements
+                const baseGeometry = new THREE.CylinderGeometry(1.5, 1.5, 0.5, 32);
+                const baseMaterial = new THREE.MeshPhongMaterial({ color: 0x4a90e2 });
+                const base = new THREE.Mesh(baseGeometry, baseMaterial);
+                logoGroup.add(base);
+
+                // Top part of the logo
+                const topGeometry = new THREE.SphereGeometry(1, 32, 32, 0, Math.PI * 2, 0, Math.PI / 2);
+                const topMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+                const top = new THREE.Mesh(topGeometry, topMaterial);
+                top.position.y = 0.5;
+                logoGroup.add(top);
+
+                // Add decorative elements
+                for (let i = 0; i < 8; i++) {
+                    const angle = (i / 8) * Math.PI * 2;
+                    const radius = 1;
+                    
+                    const dotGeometry = new THREE.SphereGeometry(0.15, 16, 16);
+                    const dotMaterial = new THREE.MeshPhongMaterial({ color: 0x1e70eb });
+                    const dot = new THREE.Mesh(dotGeometry, dotMaterial);
+                    
+                    dot.position.x = Math.cos(angle) * radius;
+                    dot.position.z = Math.sin(angle) * radius;
+                    dot.position.y = 0.5;
+                    
+                    logoGroup.add(dot);
+                }
+
+                // Add lights
+                const light1 = new THREE.DirectionalLight(0xffffff, 1);
+                light1.position.set(1, 1, 1);
+                scene.add(light1);
+
+                const light2 = new THREE.DirectionalLight(0xffffff, 0.5);
+                light2.position.set(-1, 0.5, -1);
+                scene.add(light2);
+
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+
+                camera.position.z = 5;
+                camera.position.y = 1;
+
+                // Animation loop
+                function animate() {
+                    requestAnimationFrame(animate);
+                    logoGroup.rotation.y += 0.01;
+                    renderer.render(scene, camera);
+                }
+                animate();
+
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    const newWidth = container.clientWidth;
+                    const newHeight = container.clientHeight;
+                    camera.aspect = newWidth / newHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(newWidth, newHeight);
+                });
+            } catch (e) {
+                console.error("3D logo error:", e);
+                // Fallback for devices that don't support WebGL
+                const container = document.getElementById('logo3D');
+                container.innerHTML = `<img src="https://page1.genspark.site/v1/base64_upload/650dd65fe45add031eb296e5a5c58ad4" alt="Shree Ganesh" class="w-24 h-24">`;
+            }
+        })();
+
+        // Main 3D Animation
+        (function() {
+            try {
+                const container = document.getElementById('animationCanvas');
+                const scene = new THREE.Scene();
+                scene.background = new THREE.Color(0xf0f8ff);
+                
+                const camera = new THREE.PerspectiveCamera(75, container.clientWidth / container.clientHeight, 0.1, 1000);
+                
+                const renderer = new THREE.WebGLRenderer({ antialias: true });
+                renderer.setSize(container.clientWidth, container.clientHeight);
+                container.appendChild(renderer.domElement);
+                
+                // Create electronics-related 3D objects
+                const objects = new THREE.Group();
+                scene.add(objects);
+                
+                // TV model
+                const tvBase = new THREE.BoxGeometry(5, 3, 0.5);
+                const tvScreen = new THREE.BoxGeometry(4.5, 2.5, 0.1);
+                const tvStand = new THREE.BoxGeometry(1, 1, 0.5);
+                
+                const tvBaseMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+                const tvScreenMaterial = new THREE.MeshPhongMaterial({ color: 0x1e70eb });
+                
+                const tvBaseMesh = new THREE.Mesh(tvBase, tvBaseMaterial);
+                const tvScreenMesh = new THREE.Mesh(tvScreen, tvScreenMaterial);
+                const tvStandMesh = new THREE.Mesh(tvStand, tvBaseMaterial);
+                
+                tvScreenMesh.position.z = 0.3;
+                tvStandMesh.position.y = -2;
+                
+                const tv = new THREE.Group();
+                tv.add(tvBaseMesh);
+                tv.add(tvScreenMesh);
+                tv.add(tvStandMesh);
+                
+                tv.position.x = 3;
+                tv.rotation.y = -Math.PI / 6;
+                objects.add(tv);
+                
+                // Washing machine model
+                const washingMachine = new THREE.Group();
+                
+                const bodyGeometry = new THREE.BoxGeometry(3, 4, 3);
+                const bodyMaterial = new THREE.MeshPhongMaterial({ color: 0xffffff });
+                const body = new THREE.Mesh(bodyGeometry, bodyMaterial);
+                
+                const doorGeometry = new THREE.CylinderGeometry(1.2, 1.2, 0.3, 32, 1, false, 0, Math.PI * 2);
+                const doorMaterial = new THREE.MeshPhongMaterial({ color: 0x4a90e2, transparent: true, opacity: 0.7 });
+                const door = new THREE.Mesh(doorGeometry, doorMaterial);
+                
+                door.rotation.x = Math.PI / 2;
+                door.position.z = 1.65;
+                
+                const controlPanel = new THREE.BoxGeometry(3, 0.8, 0.2);
+                const controlPanelMaterial = new THREE.MeshPhongMaterial({ color: 0x333333 });
+                const controlPanelMesh = new THREE.Mesh(controlPanel, controlPanelMaterial);
+                
+                controlPanelMesh.position.y = 1.6;
+                controlPanelMesh.position.z = 1.5;
+                
+                washingMachine.add(body);
+                washingMachine.add(door);
+                washingMachine.add(controlPanelMesh);
+                
+                washingMachine.position.x = -3;
+                washingMachine.rotation.y = Math.PI / 6;
+                objects.add(washingMachine);
+                
+                // Add lights
+                const light = new THREE.DirectionalLight(0xffffff, 1);
+                light.position.set(0, 3, 5);
+                scene.add(light);
+                
+                const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
+                scene.add(ambientLight);
+                
+                camera.position.z = 10;
+                
+                // Add controls
+                const controls = new THREE.OrbitControls(camera, renderer.domElement);
+                controls.enableDamping = true;
+                controls.dampingFactor = 0.05;
+                controls.enableZoom = false;
+                
+                // Animation function
+                function animate() {
+                    requestAnimationFrame(animate);
+                    objects.rotation.y += 0.003;
+                    controls.update();
+                    renderer.render(scene, camera);
+                }
+                animate();
+                
+                // Handle window resize
+                window.addEventListener('resize', () => {
+                    const newWidth = container.clientWidth;
+                    const newHeight = container.clientHeight;
+                    camera.aspect = newWidth / newHeight;
+                    camera.updateProjectionMatrix();
+                    renderer.setSize(newWidth, newHeight);
+                });
+
+                // Add glow effects to elements with mouseover
+                const cards = document.querySelectorAll('.card-3d');
+                
+                cards.forEach(card => {
+                    card.addEventListener('mousemove', function(e) {
+                        const rect = this.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        const centerX = rect.width / 2;
+                        const centerY = rect.height / 2;
+                        
+                        const angleX = (y - centerY) / 30;
+                        const angleY = (x - centerX) / -30;
+                        
+                        this.style.transform = `rotateX(${angleX}deg) rotateY(${angleY}deg)`;
+                    });
+                    
+                    card.addEventListener('mouseleave', function() {
+                        this.style.transform = 'rotateX(0) rotateY(0)';
+                    });
+                });
+            } catch(e) {
+                console.error("Animation canvas error:", e);
+                // Fallback content if WebGL not available
+                document.getElementById('animationCanvas').innerHTML = `
+                    <div class="p-6 bg-blue-50 rounded-lg">
+                        <h3 class="text-2xl font-bold text-center text-blue-600 mb-4">Cutting-Edge Technology</h3>
+                        <p class="text-lg text-center">We use the latest diagnostic equipment and repair techniques to fix your electronics.</p>
+                        <div class="flex justify-center mt-4">
+                            <i class="fas fa-microchip text-blue-500 text-5xl mx-4"></i>
+                            <i class="fas fa-tools text-blue-500 text-5xl mx-4"></i>
+                            <i class="fas fa-laptop-medical text-blue-500 text-5xl mx-4"></i>
+                        </div>
+                    </div>
+                `;
+            }
+        })();
+
+        // Add scroll reveal effects
+        document.addEventListener('DOMContentLoaded', function() {
+            const sections = document.querySelectorAll('.section');
+            
+            function checkScroll() {
+                const triggerBottom = window.innerHeight * 0.8;
+                
+                sections.forEach(section => {
+                    const sectionTop = section.getBoundingClientRect().top;
+                    
+                    if(sectionTop < triggerBottom) {
+                        section.style.opacity = '1';
+                        section.style.transform = 'translateY(0)';
+                    }
+                });
+            }
+            
+            // Initial styling
+            sections.forEach(section => {
+                section.style.opacity = '0';
+                section.style.transform = 'translateY(30px)';
+                section.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+            });
+            
+            // Check on load
+            checkScroll();
+            
+            // Check on scroll
+            window.addEventListener('scroll', checkScroll);
+        });
+    </script>
+</body>
+</html>
